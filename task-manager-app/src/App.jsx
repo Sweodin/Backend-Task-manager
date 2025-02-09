@@ -8,7 +8,7 @@ import "./App.css";
 const App = () => {
   /*----- Use the custom hook to manage tasks -----*/
 
-  const { tasks, addTask, toggleComplete, deleteTask } = useTaskManager();
+  const { tasks, categories, users, addTask, toggleComplete, deleteTask } = useTaskManager();
 
   return (
     <div className="app">
