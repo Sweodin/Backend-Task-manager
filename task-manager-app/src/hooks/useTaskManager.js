@@ -22,20 +22,20 @@ const useTaskManager = () => {
     const newTask = {
       id: Date.now(), /*----- Generate a unique ID for the task -----*/
       title: taskData.title, /*----- Task title -----*/
-      category: taskData.category,
-      assignedTo: taskData.assignedTo,
+      category: taskData.category || categories[0],
+      assignedTo: taskData.assignedTo || users[0],
       completed: false, /*----- Default task status -----*/
       createdAt: new Date().toISOString(),
       dueDate: taskData.dueDate || null,
       priority: taskData.priority || "Medium",
     };
-    setTasks([...tasks, newTask]); /*----- Add the new task to the list -----*/
+    setTasks(prevTasks => [...prevTasks, newTask]); /*----- Add the new task to the list -----*/
   };
 
   /*----- Function to toggle the completion status of a task -----*/
   const toggleComplete = (id) => {
-    setTasks(
-      tasks.map((task) =>
+    setTasks(prevTasks =>
+      prevTasks.map((task) =>
         task.id === id ? { ...task, completed: !task.completed } : task
       )
     );
@@ -43,12 +43,12 @@ const useTaskManager = () => {
 
   /*----- Function to delete a task -----*/
   const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id)); /*----- Remove the task with the given ID -----*/
+    setTasks(prevTasks => prevTasks.filter((task) => task.id !== id)); /*----- Remove the task with the given ID -----*/
   };
 
   const updateTask = (id, updateData) => {
-    setTasks(
-      tasks.map((task) =>
+    setTasks(prevTasks =>
+      prevTasks.map((task) =>
         task.id === id ? { ...task, ...updateData } : task
       )
     );

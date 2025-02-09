@@ -8,18 +8,21 @@ import "./App.css";
 const App = () => {
   /*----- Use the custom hook to manage tasks -----*/
 
-  const { tasks, categories, users, addTask, toggleComplete, deleteTask } = useTaskManager();
+  const { tasks, categories, users, addTask, toggleComplete, deleteTask, updateTask } = useTaskManager();
 
   return (
     <div className="app">
       <Navbar /> {/* Render the navigation bar */}
       <div className="container">
         <h1 className="app-title">My Tasks</h1> {/* Page title */}
-        <TaskForm onAddTask={addTask} /> {/* Form to add new tasks */}
+        <TaskForm onAddTask={addTask} categories= {categories} users= {users} /> {/* Form to add new tasks */}
         <TaskList
           tasks={tasks}
+          categories= {categories}
+          users= {users}
           onToggleComplete={toggleComplete}
-          onDeleteTask={deleteTask}
+          onDelete={deleteTask}
+          onUpdate={updateTask}
         />
       </div>
     </div>
