@@ -1,30 +1,97 @@
-import React, { useState } from "react";
-import "./TaskForm.css";
+import React, { useState } from 'react';
+import './TaskForm.css';
 
-const TaskForm = ({ onAddTask }) => {
-  const [newTaskTitle, setNewTaskTitle] =
-    useState(""); /*----- State for the new task title -----*/
+const TaskForm = ({ onAddTask, categories = [], users = [] }) => {
+  const [taskData, setTaskData] = useState({
+    title: '',
+    category: categories[0] || '',
+    assignedTo: users[0] || '',
+    dueDate: '',
+    priority: 'medium',
+  });
 
-  /*----- Handle form submission -----*/
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (newTaskTitle.trim()) {
-      onAddTask(newTaskTitle); /*----- Add the new task -----*/
-      setNewTaskTitle(""); /*----- Clear the input field -----*/
+    if (taskData.title.trim()) {
+      onAddTask(taskData);
+      setTaskData({
+        title: '',
+        category: categories[0] || '',
+        assignedTo: users[0] || '',
+        dueDate: '',
+        priority: 'medium',
+      });
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setTaskData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="task-form">
+    <form className="task-form" onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Add a new task"
-        value={newTaskTitle}
-        onChange={(e) =>
-          setNewTaskTitle(e.target.value)
-        } /*----- Update the task title -----*/
+        name="title"
+        value={taskData.title}
+        onChange={handleChange}
+        placeholder="Enter task title"
+        className="task-input"
+        required
       />
-      <button type="submit">Add Task</button> {/*----- Submit button -----*/}
+      
+      <select
+        name="category"
+        value={taskData.category}
+        onChange={handleChange}
+        className="task-select"
+      >
+        {categories.map(category => (
+          <option key={category} value={category}>
+            {category}
+          </option>
+        ))}
+      </select>
+
+      <select
+        name="assignedTo"
+        value={taskData.assignedTo}
+        onChange={handleChange}
+        className="task-select"
+      >
+        {users.map(user => (
+          <option key={user} value={user}>
+            {user}
+          </option>
+        ))}
+      </select>
+
+      <input
+        type="date"
+        name="dueDate"
+        value={taskData.dueDate}
+        onChange={handleChange}
+        className="task-input"
+      />
+
+      <select
+        name="priority"
+        value={taskData.priority}
+        onChange={handleChange}
+        className="task-select"
+      >
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+
+      <button type="submit" className="add-task-btn">
+        Add Task
+      </button>
     </form>
   );
 };
